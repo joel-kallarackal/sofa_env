@@ -1,0 +1,14 @@
+
+--- NEW SESSION: 20/04/2024 01:42:50 ---
+//DirectionalLight.color = 1 1 1 1
+/scene/intestine/visual/OglModel.material = Default Diffuse 1 1 1 0 1 Ambient 1 0.2 0.2 0 1 Specular 0 1 1 0 1 Emissive 0 1 1 0 1 Shininess 0 45 
+/scene/intestine/visual/OglModel.primitiveType = DEFAULT
+/scene/intestine/visual/OglModel.cullFace = 2
+
+--- NEW SESSION: 20/04/2024 09:29:12 ---
+//camera.fixedLookAt = 1
+
+--- NEW SESSION: 09/05/2024 17:12:55 ---
+/scene/Gripper_controller_rcm/MechanicalObject.position = -20 -311.603 -20.0962 -0.866025 0 0 0.5
+/scene/Gripper_controller_rcm/MechanicalObject.force = 0 0 0 0 0 0
+/scene/Gripper_controller_rcm/MechanicalObject.showColor = 1 1 1 1
