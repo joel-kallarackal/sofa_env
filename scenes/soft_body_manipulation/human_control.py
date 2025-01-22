@@ -11,7 +11,7 @@ from pathlib import Path
 import argparse
 from sofa_env.scenes.soft_body_manipulation.sofa_objects.gripper1 import Gripper1, GRIPPER_PLUGIN_LIST
 from sofa_env.scenes.soft_body_manipulation.sofa_objects.gripper2 import Gripper2, GRIPPER_PLUGIN_LIST
-from sofa_env.scenes.grasp_lift_touch.sofa_objects.tool_controller1 import KeyboardController
+from keyboard_control import KeyboardController
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Setup human input behavior.")
     parser.add_argument("-rv", "--record_video", action="store_true", help="Record video of the trajectory.")
@@ -75,10 +75,11 @@ if __name__ == "__main__":
 
         env = TrajectoryRecorder(
             env,
-            log_dir="trajectories",
+            log_dir="/home/sofa/SOFA_v23.06.00/bin/lapgym/sofa_env/sofa_env/scenes/soft_body_manipulation/trajectories",
             metadata=metadata,
             store_info=True,
-            save_compressed_keys=["observation", "terminal_observation", "rgb", "info"],
+            # save_compressed_keys=["observation", "terminal_observation", "rgb", "info"],
+            save_compressed_keys=["observation", "rgb", "info"],
             after_step_callbacks=[store_rgb_obs],
             after_reset_callbacks=[store_rgb_obs],
         )
@@ -112,7 +113,7 @@ if __name__ == "__main__":
         #        instrument = 0 if instrument == 1 else 1
         #    up = Falsezqa
         #else:
-        #    up = True
+        #    up = True/home/sofa/SOFA_v23.06.00/bin/lapgym/sofa_env/sofa_env/scenes/soft_body_manipulation/trajectories/SoftBodyManipulationEnv_5/trajectory_dict.npy_file.npz
         #print(action)
         #action = np.array([0.05, 0.05, 0.0, 0.0, 0.55,0.0, 0.0, 0.0, 0.0, 0.0])
         #action = controller.do_action(action)
@@ -141,7 +142,7 @@ if __name__ == "__main__":
         
         #print(action)        
         
-        obs, reward, done, info = env.step(action)
+        obs, reward, terminated, truncated, info = env.step(action)
         print(info["final_phase"])
         if video_writer is not None:
             video_writer.write(env.render()[:, :, ::-1])
@@ -151,6 +152,7 @@ if __name__ == "__main__":
         #    break
         if escape:
             cv2.imwrite("/home/saketh/SOFA/v23.06.00/bin/lapgym/sofa_env/sofa_env/scenes/soft_body_manipulation/start_image.png", env.render()[:, :, ::-1])
+            env.write_trajectory_to_disk()
             break
         end = time.perf_counter()
         fps = 1 / (end - start)

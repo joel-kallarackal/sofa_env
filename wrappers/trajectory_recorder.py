@@ -112,6 +112,17 @@ class TrajectoryRecorder(gym.Wrapper):
         for callback in self.after_reset_callbacks:
             callback(self)
         return observation, reset_info
+    
+    def convert_keys_to_string(self, input_dict):
+        result = {}
+        for key, value in input_dict.items():
+            key = str(key)
+            if isinstance(value, (dict, defaultdict)):
+                value = self.convert_keys_to_string(value)
+        
+            result[key] = value
+        
+        return result
 
     def write_trajectory_to_disk(self):
         # Generate the base name of the trajectory based on the environment name
@@ -139,6 +150,7 @@ class TrajectoryRecorder(gym.Wrapper):
             callback(self, trajectory_dir, trajectory_number)
 
         # Remove the arrays that should be compressed from the trajectory dictionary
+        print(self.save_compressed_keys)
         for key in self.save_compressed_keys:
             # Pop from trajectory dictionary
             data = self.trajectory.pop(key)
@@ -152,6 +164,7 @@ class TrajectoryRecorder(gym.Wrapper):
 
         # Write metadate to disk in a separate json file
         if self.metadata is not None:
+            self.metadata = self.convert_keys_to_string(self.metadata)
             with open(trajectory_dir / "metadata.json", "w") as outfile:
                 json.dump(self.metadata, outfile)
 
